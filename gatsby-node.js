@@ -206,6 +206,8 @@ exports.sourceNodes = async (
     return nodeData
   }
 
+  const sleep = (ms) => Promise.resolve(new Promise((resolve) => setTimeout(resolve, ms)))
+
   const getPaginatedResource = async (resource, data = {}, search = '', maxRetries = 5) => {
     try {
       const response = await moltin.get(`${resource}${search}`)
@@ -226,9 +228,10 @@ exports.sourceNodes = async (
 
       return merged
     } catch (error) {
-      console.log('Error getting paginated resource', error)
       if (maxRetries > 0) {
-        console.log(`Retrying ${resource}...`)
+        const waitingTime = (6 - maxRetries) * 60000
+        await sleep(waitingTime)
+        console.log(`Retrying (${6 - maxRetries}/5): Waiting ${waitingTime / 1000 } seconds to make the request again`)
         return getPaginatedResource(resource, data, search, maxRetries - 1)
       }
       console.error('gatsby-source-moltin: ERROR', error)
