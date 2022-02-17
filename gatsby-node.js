@@ -226,6 +226,7 @@ exports.sourceNodes = async (
 
       return merged
     } catch (error) {
+      console.log('Error getting paginated resource', error)
       if (maxRetries > 0) {
         console.log(`Retrying ${resource}...`)
         return getPaginatedResource(resource, data, search, maxRetries - 1)
