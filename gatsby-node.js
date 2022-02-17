@@ -230,8 +230,8 @@ exports.sourceNodes = async (
     } catch (error) {
       if (maxRetries > 0) {
         const waitingTime = (6 - maxRetries) * 60000
-        await sleep(waitingTime)
         console.log(`Retrying (${6 - maxRetries}/5): Waiting ${waitingTime / 1000 } seconds to make the request again`)
+        await sleep(waitingTime)
         return getPaginatedResource(resource, data, search, maxRetries - 1)
       }
       console.error('gatsby-source-moltin: ERROR', error)
