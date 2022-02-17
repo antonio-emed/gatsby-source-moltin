@@ -227,6 +227,7 @@ exports.sourceNodes = async (
       return merged
     } catch (error) {
       if (maxRetries > 0) {
+        console.log(`Retrying ${resource}...`)
         return getPaginatedResource(resource, data, search, maxRetries - 1)
       }
       console.error('gatsby-source-moltin: ERROR', error)
